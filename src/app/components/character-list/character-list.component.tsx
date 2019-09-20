@@ -1,16 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import styled from 'styled-components';
+
+import { Character } from '../../models/Character';
+import { CharacterService } from '../../services/character.service';
+import CharacterCard from '../character-card/character-card.component';
+
+const Grid = styled.div`
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+`;
 
 export default function CharacterList() {
-  // TODO: Add useState to track data from useEffect
+  const [characters, setCharacters] = React.useState<Character[]>([]);
 
-  useEffect(() => {
-    // TODO: Add API Request here - must run in `useEffect`
-    //  Important: verify the 2nd `useEffect` parameter: the dependancies array!
+  React.useEffect(() => {
+    CharacterService.getCharacters();
+    const subscription = CharacterService.subscribe(setCharacters);
+    return () => subscription.unsubscribe();
   }, []);
+
+  React.useEffect(() => {}, []);
 
   return (
     <section className='character-list'>
-      <h2>TODO: `array.map()` over your state here!</h2>
+      <h2>Characters</h2>
+      <Grid>
+        {characters.map(character => (
+          <CharacterCard character={character} key={character.id} />
+        ))}
+      </Grid>
     </section>
   );
 }

@@ -3,23 +3,3 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
-.grid-view {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-
-.page-view {
-  min-height: 40vh;
-}
-
-.grid-view div.card.ui {
-  margin: 1.25rem;
-}
-/*
-.main-img {
-  display: block;
-  border-radius: 100%;
-  margin: 0 auto;
-} */
