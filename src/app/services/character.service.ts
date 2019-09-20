@@ -2,28 +2,23 @@ import axios from 'axios';
 import { BehaviorSubject } from 'rxjs';
 
 import { Character } from '../models/Character';
+import { Index } from '../models/Index';
 
-type Index = {
-  page: number;
-  next: boolean;
-  prev: boolean;
-};
-
-enum To {
+export enum To {
   Next,
   Prev,
 }
 
 export class CharacterService {
-  private static index = new BehaviorSubject<Index>({
-    page: 1,
-    next: true,
-    prev: false,
-  });
+  private static index = new BehaviorSubject<Index>({ page: 1, next: true, prev: false });
   private static characters = new BehaviorSubject<Character[]>([]);
 
   public static subscribe(setCharacters: (characters: Character[]) => void) {
     return this.characters.subscribe(setCharacters);
+  }
+
+  public static subscribeIndex(setIndex: (index: Index) => void) {
+    return this.index.subscribe(setIndex);
   }
 
   public static async getCharacters(to?: To) {
