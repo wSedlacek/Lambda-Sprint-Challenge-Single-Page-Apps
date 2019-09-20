@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 import Button from '@material-ui/core/Button';
 
+import { Index } from '../../models/Index';
 import { Character } from '../../models/Character';
 import { CharacterService, To } from '../../services/character.service';
 import CharacterCard from '../character-card/character-card.component';
-import { Index } from '../../models/Index';
+import SearchForm from '../search-form/search-form.component';
 
 const Section = styled.section`
   position: relative;
@@ -22,6 +23,10 @@ const Pages = styled.div`
   }
 `;
 
+const NoResults = styled.h2`
+  text-align: center;
+`;
+
 const Grid = styled.div`
   display: grid;
   grid-gap: 10px;
@@ -33,22 +38,29 @@ export default function CharacterList() {
   const [characters, setCharacters] = React.useState<Character[]>([]);
 
   React.useEffect(() => {
-    CharacterService.getCharacters();
     const subscription = CharacterService.subscribe(setCharacters);
     const indexSubscription = CharacterService.subscribeIndex(setIndex);
+    const searchSubscription = CharacterService.searchResults();
     return () => {
       subscription.unsubscribe();
       indexSubscription.unsubscribe();
+      searchSubscription.unsubscribe();
     };
   }, []);
 
-  React.useEffect(() => {}, []);
+  if (!index)
+    return (
+      <Section>
+        <h2>Characters</h2>>
+      </Section>
+    );
 
   return (
     <Section>
       <h2>Characters</h2>
+      <SearchForm />
       <Pages>
-        {index && index.prev && (
+        {index.prev && (
           <Button
             variant='contained'
             color='primary'
@@ -57,7 +69,7 @@ export default function CharacterList() {
             Previous
           </Button>
         )}
-        {index && index.next && (
+        {index.next && (
           <Button
             variant='contained'
             color='primary'
@@ -67,6 +79,7 @@ export default function CharacterList() {
           </Button>
         )}
       </Pages>
+      {characters.length === 0 && <NoResults>No Search Results Found</NoResults>}
       <Grid>
         {characters.map(character => (
           <CharacterCard character={character} key={character.id} />

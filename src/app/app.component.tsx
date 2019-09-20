@@ -26,7 +26,6 @@ export default function App() {
     <Router>
       <Main>
         <Header />
-        <SearchForm />
         <Switch>
           <Route exact path='/' render={() => <WelcomePage />} />
           <Route exact path='/characters' render={() => <CharacterList />} />

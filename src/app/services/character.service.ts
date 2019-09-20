@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, timer } from 'rxjs';
+import { debounce } from 'rxjs/operators';
 
 import { Character } from '../models/Character';
 import { Index } from '../models/Index';
@@ -12,6 +13,7 @@ export enum To {
 export class CharacterService {
   private static index = new BehaviorSubject<Index>({ page: 1, next: true, prev: false });
   private static characters = new BehaviorSubject<Character[]>([]);
+  private static filter = new BehaviorSubject<string>('');
 
   public static subscribe(setCharacters: (characters: Character[]) => void) {
     return this.characters.subscribe(setCharacters);
@@ -21,8 +23,21 @@ export class CharacterService {
     return this.index.subscribe(setIndex);
   }
 
+  public static search(value: string) {
+    this.filter.next(value);
+  }
+
+  public static searchResults() {
+    const debounced = this.filter.pipe(debounce(() => timer(100)));
+    return debounced.subscribe(() => {
+      this.index.next({ page: 1, next: true, prev: false });
+      this.getCharacters();
+    });
+  }
+
   public static async getCharacters(to?: To) {
     let { page, next, prev } = this.index.getValue();
+    let filter = this.filter.getValue();
 
     if (to === undefined) page = page;
     else if (to === To.Next && next) page++;
@@ -35,7 +50,7 @@ export class CharacterService {
       data: {
         query: `
         {
-          characters(page: ${page}) {
+          characters(page: ${page} ${filter ? `filter: {name: "${filter}" }` : ''}) {
             info {
               next,
               prev
@@ -72,6 +87,6 @@ export class CharacterService {
       prev: result.characters.info.prev !== null,
     });
 
-    this.characters.next([...result.characters.results]);
+    this.characters.next(result.characters.results ? [...result.characters.results] : []);
   }
 }
