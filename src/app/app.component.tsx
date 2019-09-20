@@ -29,8 +29,8 @@ export default function App() {
         <Switch>
           <Route exact path='/' render={() => <WelcomePage />} />
           <Route exact path='/characters' render={() => <CharacterList />} />
-          {/* <Route path='/characters/:id' render={() => <CharacterCard />} /> */}
-          {/* <Route exact path='/locations' render={() => <LocationsList />} />
+          {/* <Route path='/characters/:id' render={() => <CharacterCard />} />
+          <Route exact path='/locations' render={() => <LocationsList />} />
           <Route path='/locations/:id' render={() => <LocationCard />} /> */}
         </Switch>
       </Main>

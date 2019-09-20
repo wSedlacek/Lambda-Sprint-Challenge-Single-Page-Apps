@@ -1,12 +1,11 @@
 import React from 'react';
 
+import { Location } from '../../models/Location';
+
 type LocationCardProps = {
-  name: string;
-  type: string;
-  dimension: string;
-  residents: string;
+  location: Location;
 };
 
-export default function LocationCard({ name, type, dimension, residents }: LocationCardProps) {
+export default function LocationCard({ location }: LocationCardProps) {
   return <span>todo: location</span>;
 }
