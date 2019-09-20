@@ -25,9 +25,12 @@ In this challenge, you will create a Single Page Application complete with Clien
 
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question.
 
-- [ ]  Explain benefit(s) using `client-side routing`?
+- [x]  Explain benefit(s) using `client-side routing`?
 
-> Answer:
+> Answer: Client-side routing actually has a few benefits, namely:
+> No refreshing when navigating between pages
+> Loading the entire applicaiton (all routes) on first load (unless you specifically lazy load)
+> Dynamic Routes completely controlled by a Framwork or Library (React, Angular, Vue, etc.)
 
 ## Project Set Up
 
