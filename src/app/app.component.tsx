@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { CharacterService } from './services/character.service';
 import Header from './components/header/header.component';
 import SearchForm from './components/search-form/search-form.component';
 import WelcomePage from './components/welcome-page/welcome-page.component';
@@ -29,7 +30,7 @@ export default function App() {
         <Switch>
           <Route exact path='/' render={() => <WelcomePage />} />
           <Route exact path='/characters' render={() => <CharacterList />} />
-          <Route path='/characters/:id' render={() => <CharacterCard />} />
+          {/* <Route path='/characters/:id' render={() => <CharacterCard />} /> */}
           {/* <Route exact path='/locations' render={() => <LocationsList />} />
           <Route path='/locations/:id' render={() => <LocationCard />} /> */}
         </Switch>
